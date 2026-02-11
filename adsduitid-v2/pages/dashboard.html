@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-9697754978669232">
+    <title>Dashboard - AdsDuitID</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="dashboard.html" class="navbar-brand">
+                <img src="../images/logo.png" alt="AdsDuitID">
+                <span>AdsDuitID</span>
+            </a>
+            <ul class="navbar-nav">
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="earn.html">Mulai Kerja</a></li>
+                <li><a href="withdraw.html">Penarikan</a></li>
+                <li><a href="referral.html">Referral</a></li>
+                <li><a href="#" onclick="logout()" style="color: var(--danger);"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+        <div class="dashboard-container">
+            <!-- Welcome -->
+            <div style="margin-bottom: 2rem;">
+                <h1 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Selamat Datang, <span id="userName">User</span>!</h1>
+                <p style="color: var(--gray);">Semangat menghasilkan uang hari ini</p>
+            </div>
+            
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-value" id="saldo">Rp 0</div>
+                    <div class="stat-label">Saldo Saat Ini</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="stat-value" id="totalPenghasilan">Rp 0</div>
+                    <div class="stat-label">Total Penghasilan</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="stat-value" id="totalAds">0</div>
+                    <div class="stat-label">Iklan Ditonton</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value" id="totalReferral">0</div>
+                    <div class="stat-label">Teman Diundang</div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <a href="earn.html" class="quick-action">
+                    <i class="fas fa-play-circle"></i>
+                    <span>Mulai Kerja</span>
+                </a>
+                <a href="withdraw.html" class="quick-action">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Penarikan</span>
+                </a>
+                <a href="referral.html" class="quick-action">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Referral</span>
+                </a>
+                <a href="#" class="quick-action" onclick="copyReferralLink()">
+                    <i class="fas fa-copy"></i>
+                    <span>Salin Link</span>
+                </a>
+            </div>
+            
+            <!-- Referral Banner -->
+            <div class="card" style="margin-bottom: 2rem; background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%); border: 1px solid rgba(16, 185, 129, 0.2);">
+                <div class="card-body">
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                        <div>
+                            <h3 style="font-size: 1.125rem; margin-bottom: 0.5rem;"><i class="fas fa-gift" style="color: var(--primary); margin-right: 0.5rem;"></i>Program Referral</h3>
+                            <p style="color: var(--gray); font-size: 0.875rem;">Undang teman dan dapatkan Rp 50 + komisi 20%</p>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="referralLink" readonly style="padding: 0.5rem 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.875rem; min-width: 250px; background: white;">
+                            <button class="btn btn-primary" onclick="copyReferralLink()">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Transactions -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 class="table-title"><i class="fas fa-history" style="margin-right: 0.5rem;"></i>Riwayat Transaksi</h3>
+                    <a href="#" style="font-size: 0.875rem; color: var(--primary);">Lihat Semua</a>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Keterangan</th>
+                            <th>Jumlah</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionTable">
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: var(--gray);">Belum ada transaksi</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // Storage
+        const Storage = {
+            getUsers() {
+                return JSON.parse(localStorage.getItem('adsduitid_users') || '[]');
+            },
+            saveUser(user) {
+                const users = this.getUsers();
+                const index = users.findIndex(u => u.id === user.id);
+                if (index >= 0) users[index] = user;
+                else users.push(user);
+                localStorage.setItem('adsduitid_users', JSON.stringify(users));
+            },
+            getCurrentUser() {
+                return JSON.parse(localStorage.getItem('adsduitid_current_user') || 'null');
+            },
+            setCurrentUser(user) {
+                localStorage.setItem('adsduitid_current_user', JSON.stringify(user));
+            },
+            getTransactions() {
+                return JSON.parse(localStorage.getItem('adsduitid_transactions') || '[]');
+            },
+            getAdViews() {
+                return JSON.parse(localStorage.getItem('adsduitid_ad_views') || '[]');
+            }
+        };
+
+        // Format
+        function formatRupiah(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+            }).format(amount);
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+            });
+        }
+
+        // Toast
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Check login
+        let currentUser = Storage.getCurrentUser();
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+
+        // Update dashboard
+        function updateDashboard() {
+            currentUser = Storage.getCurrentUser();
+            if (!currentUser) return;
+            
+            document.getElementById('userName').textContent = currentUser.nama;
+            document.getElementById('saldo').textContent = formatRupiah(currentUser.saldo);
+            document.getElementById('totalPenghasilan').textContent = formatRupiah(currentUser.totalPenghasilan);
+            
+            // Count ads
+            const adViews = Storage.getAdViews().filter(av => av.userId === currentUser.id);
+            document.getElementById('totalAds').textContent = adViews.length;
+            
+            // Count referrals
+            const users = Storage.getUsers();
+            const referredUsers = users.filter(u => u.referredBy === currentUser.id);
+            document.getElementById('totalReferral').textContent = referredUsers.length;
+            
+            // Referral link
+            const refLink = `${window.location.origin}/pages/register.html?ref=${currentUser.referralCode}`;
+            document.getElementById('referralLink').value = refLink;
+            
+            // Transactions
+            updateTransactionTable();
+        }
+
+        function updateTransactionTable() {
+            const transactions = Storage.getTransactions()
+                .filter(t => t.userId === currentUser.id)
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .slice(0, 5);
+            
+            const tbody = document.getElementById('transactionTable');
+            
+            if (transactions.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--gray);">Belum ada transaksi</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = transactions.map(t => `
+                <tr>
+                    <td>${formatDate(t.createdAt)}</td>
+                    <td>${t.description}</td>
+                    <td style="color: ${t.amount >= 0 ? 'var(--success)' : 'var(--danger)'}; font-weight: 600;">
+                        ${t.amount >= 0 ? '+' : ''}${formatRupiah(t.amount)}
+                    </td>
+                    <td><span class="badge badge-${t.status === 'completed' ? 'success' : t.status === 'pending' ? 'warning' : 'danger'}">${t.status === 'completed' ? 'Selesai' : t.status === 'pending' ? 'Pending' : 'Ditolak'}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function copyReferralLink() {
+            const link = document.getElementById('referralLink').value;
+            navigator.clipboard.writeText(link);
+            showToast('Link referral berhasil disalin!');
+        }
+
+        function logout() {
+            Storage.setCurrentUser(null);
+            window.location.href = '../index.html';
+        }
+
+        // Init
+        updateDashboard();
+    </script>
+</body>
+</html>

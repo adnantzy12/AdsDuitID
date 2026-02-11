@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-9697754978669232">
+    <title>Daftar - AdsDuitID</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 2rem;
+        }
+        
+        .auth-container {
+            width: 100%;
+            max-width: 480px;
+        }
+        
+        .auth-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #10b981 0%, #f59e0b 100%);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .auth-logo img {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .auth-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-subtitle {
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: white;
+        }
+        
+        .info-text {
+            font-size: 0.75rem;
+            color: var(--gray-light);
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-container">
+            <a href="../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Kembali ke Beranda
+            </a>
+            
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-logo">
+                        <img src="../images/logo.png" alt="AdsDuitID">
+                    </div>
+                    <h1 class="auth-title">Buat Akun Baru</h1>
+                    <p class="auth-subtitle">Isi data diri Anda untuk mulai menghasilkan uang</p>
+                </div>
+                
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap</label>
+                        <div class="form-input-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" class="form-input" id="nama" placeholder="Masukkan nama lengkap" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Nomor DANA</label>
+                        <div class="form-input-icon">
+                            <i class="fas fa-phone"></i>
+                            <input type="tel" class="form-input" id="nomorDana" placeholder="Contoh: 08123456789" required>
+                        </div>
+                        <p class="info-text">Nomor ini akan digunakan untuk penarikan dana</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Nama Akun DANA</label>
+                        <div class="form-input-icon">
+                            <i class="fas fa-wallet"></i>
+                            <input type="text" class="form-input" id="namaAkunDana" placeholder="Nama yang terdaftar di DANA" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Kode Referral (Opsional)</label>
+                        <div class="form-input-icon">
+                            <i class="fas fa-gift"></i>
+                            <input type="text" class="form-input" id="referralCode" placeholder="Masukkan kode referral">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.5rem;">
+                        <i class="fas fa-user-plus"></i>
+                        Daftar Gratis
+                    </button>
+                </form>
+                
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <p style="color: var(--gray); font-size: 0.875rem;">
+                        Sudah punya akun? 
+                        <a href="login.html" style="color: var(--primary); font-weight: 600; text-decoration: none;">Masuk di sini</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // Storage
+        const Storage = {
+            getUsers() {
+                return JSON.parse(localStorage.getItem('adsduitid_users') || '[]');
+            },
+            saveUser(user) {
+                const users = this.getUsers();
+                const index = users.findIndex(u => u.id === user.id);
+                if (index >= 0) {
+                    users[index] = user;
+                } else {
+                    users.push(user);
+                }
+                localStorage.setItem('adsduitid_users', JSON.stringify(users));
+            },
+            setCurrentUser(user) {
+                localStorage.setItem('adsduitid_current_user', JSON.stringify(user));
+            }
+        };
+
+        // Utils
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        function generateReferralCode() {
+            return 'ADS' + Math.random().toString(36).substr(2, 6).toUpperCase();
+        }
+
+        // Toast
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Check referral code from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const refCode = urlParams.get('ref');
+        if (refCode) {
+            document.getElementById('referralCode').value = refCode;
+        }
+
+        // Register
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nama = document.getElementById('nama').value.trim();
+            const nomorDana = document.getElementById('nomorDana').value.trim();
+            const namaAkunDana = document.getElementById('namaAkunDana').value.trim();
+            const referralCode = document.getElementById('referralCode').value.trim();
+            
+            if (nomorDana.length < 10) {
+                showToast('Nomor DANA minimal 10 digit', 'error');
+                return;
+            }
+            
+            const users = Storage.getUsers();
+            
+            if (users.some(u => u.nomorDana === nomorDana)) {
+                showToast('Nomor DANA sudah terdaftar', 'error');
+                return;
+            }
+            
+            const newUser = {
+                id: generateId(),
+                nama,
+                nomorDana,
+                namaAkunDana,
+                saldo: 0,
+                totalPenghasilan: 0,
+                referralCode: generateReferralCode(),
+                referredBy: null,
+                referralBonusGiven: false,
+                createdAt: new Date().toISOString(),
+                isAdmin: false
+            };
+            
+            // Handle referral
+            if (referralCode) {
+                const referrer = users.find(u => u.referralCode === referralCode);
+                if (referrer) {
+                    newUser.referredBy = referrer.id;
+                }
+            }
+            
+            Storage.saveUser(newUser);
+            Storage.setCurrentUser(newUser);
+            
+            showToast('Pendaftaran berhasil! Selamat datang ' + nama);
+            
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
