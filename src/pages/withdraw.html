@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-9697754978669232">
+    <title>Penarikan - AdsDuitID</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="dashboard.html" class="navbar-brand">
+                <img src="../images/logo.png" alt="AdsDuitID">
+                <span>AdsDuitID</span>
+            </a>
+            <ul class="navbar-nav">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="earn.html">Mulai Kerja</a></li>
+                <li><a href="withdraw.html" class="active">Penarikan</a></li>
+                <li><a href="referral.html">Referral</a></li>
+                <li><a href="#" onclick="logout()" style="color: var(--danger);"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <div class="dashboard-container">
+            <h1 style="font-size: 1.5rem; margin-bottom: 2rem;"><i class="fas fa-money-bill-wave" style="color: var(--primary); margin-right: 0.5rem;"></i>Penarikan Dana</h1>
+            
+            <!-- Balance Card -->
+            <div class="card" style="background: var(--gradient); color: white; margin-bottom: 2rem;">
+                <div class="card-body" style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <p style="opacity: 0.8; margin-bottom: 0.5rem;">Saldo Tersedia</p>
+                        <h2 style="font-size: 2.5rem;" id="saldoDisplay">Rp 0</h2>
+                    </div>
+                    <div style="width: 64px; height: 64px; background: rgba(255,255,255,0.2); border-radius: 1rem; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-wallet" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <!-- Withdraw Form -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 style="font-size: 1.125rem;"><i class="fas fa-paper-plane" style="color: var(--primary); margin-right: 0.5rem;"></i>Form Penarikan</h3>
+                    </div>
+                    <div class="card-body">
+                        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.5rem;">
+                            <p style="font-size: 0.875rem; color: #1e40af; margin-bottom: 0.5rem;"><i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i>Informasi Rekening</p>
+                            <p style="font-size: 0.875rem;"><strong>Nama:</strong> <span id="namaAkun">-</span></p>
+                            <p style="font-size: 0.875rem;"><strong>DANA:</strong> <span id="nomorDana">-</span></p>
+                        </div>
+                        
+                        <form id="withdrawForm">
+                            <div class="form-group">
+                                <label class="form-label">Jumlah Penarikan</label>
+                                <div style="position: relative;">
+                                    <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-weight: 600;">Rp</span>
+                                    <input type="number" class="form-input" id="jumlah" style="padding-left: 2.5rem;" placeholder="Masukkan jumlah" min="100" required>
+                                </div>
+                                <p style="font-size: 0.75rem; color: var(--gray-light); margin-top: 0.25rem;">Minimal penarikan Rp 100</p>
+                            </div>
+                            
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                                <button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.5rem; font-size: 0.75rem;" onclick="setAmount(100)">100</button>
+                                <button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.5rem; font-size: 0.75rem;" onclick="setAmount(500)">500</button>
+                                <button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.5rem; font-size: 0.75rem;" onclick="setAmount(1000)">1K</button>
+                                <button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.5rem; font-size: 0.75rem;" onclick="setAmount(5000)">5K</button>
+                                <button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.5rem; font-size: 0.75rem;" onclick="setAmount(10000)">10K</button>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <i class="fas fa-paper-plane"></i>
+                                Ajukan Penarikan
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Withdrawal History -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 style="font-size: 1.125rem;"><i class="fas fa-history" style="color: var(--primary); margin-right: 0.5rem;"></i>Riwayat Penarikan</h3>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div class="table-container" style="box-shadow: none;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Jumlah</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="withdrawalTable">
+                                    <tr>
+                                        <td colspan="3" style="text-align: center; color: var(--gray); padding: 2rem;">Belum ada penarikan</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // Storage
+        const Storage = {
+            getUsers() {
+                return JSON.parse(localStorage.getItem('adsduitid_users') || '[]');
+            },
+            saveUser(user) {
+                const users = this.getUsers();
+                const index = users.findIndex(u => u.id === user.id);
+                if (index >= 0) users[index] = user;
+                else users.push(user);
+                localStorage.setItem('adsduitid_users', JSON.stringify(users));
+            },
+            getCurrentUser() {
+                return JSON.parse(localStorage.getItem('adsduitid_current_user') || 'null');
+            },
+            setCurrentUser(user) {
+                localStorage.setItem('adsduitid_current_user', JSON.stringify(user));
+            },
+            getTransactions() {
+                return JSON.parse(localStorage.getItem('adsduitid_transactions') || '[]');
+            },
+            saveTransaction(transaction) {
+                const transactions = this.getTransactions();
+                transactions.push(transaction);
+                localStorage.setItem('adsduitid_transactions', JSON.stringify(transactions));
+            },
+            getWithdrawals() {
+                return JSON.parse(localStorage.getItem('adsduitid_withdrawals') || '[]');
+            },
+            saveWithdrawal(withdrawal) {
+                const withdrawals = this.getWithdrawals();
+                withdrawals.push(withdrawal);
+                localStorage.setItem('adsduitid_withdrawals', JSON.stringify(withdrawals));
+            }
+        };
+
+        // Format
+        function formatRupiah(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+            }).format(amount);
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'short',
+            });
+        }
+
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // Toast
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Check login
+        let currentUser = Storage.getCurrentUser();
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+
+        // Update display
+        function updateDisplay() {
+            currentUser = Storage.getCurrentUser();
+            document.getElementById('saldoDisplay').textContent = formatRupiah(currentUser.saldo);
+            document.getElementById('namaAkun').textContent = currentUser.namaAkunDana;
+            document.getElementById('nomorDana').textContent = currentUser.nomorDana;
+            updateWithdrawalTable();
+        }
+
+        function updateWithdrawalTable() {
+            const withdrawals = Storage.getWithdrawals()
+                .filter(w => w.userId === currentUser.id)
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            const tbody = document.getElementById('withdrawalTable');
+            
+            if (withdrawals.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--gray); padding: 2rem;">Belum ada penarikan</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = withdrawals.map(w => `
+                <tr>
+                    <td>${formatDate(w.createdAt)}</td>
+                    <td style="color: var(--danger); font-weight: 600;">-${formatRupiah(w.amount)}</td>
+                    <td><span class="badge badge-${w.status === 'completed' ? 'success' : w.status === 'pending' ? 'warning' : 'danger'}">${w.status === 'completed' ? 'Selesai' : w.status === 'pending' ? 'Pending' : 'Ditolak'}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function setAmount(amount) {
+            document.getElementById('jumlah').value = amount;
+        }
+
+        // Form submit
+        document.getElementById('withdrawForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const jumlah = parseInt(document.getElementById('jumlah').value);
+            
+            if (jumlah < 100) {
+                showToast('Minimal penarikan Rp 100', 'error');
+                return;
+            }
+            
+            if (currentUser.saldo < jumlah) {
+                showToast('Saldo tidak mencukupi', 'error');
+                return;
+            }
+            
+            // Deduct balance
+            currentUser.saldo -= jumlah;
+            Storage.saveUser(currentUser);
+            Storage.setCurrentUser(currentUser);
+            
+            // Save withdrawal
+            Storage.saveWithdrawal({
+                id: generateId(),
+                userId: currentUser.id,
+                amount: jumlah,
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            });
+            
+            // Save transaction
+            Storage.saveTransaction({
+                id: generateId(),
+                userId: currentUser.id,
+                type: 'withdraw',
+                amount: -jumlah,
+                status: 'pending',
+                description: `Penarikan ${formatRupiah(jumlah)} ke DANA ${currentUser.nomorDana}`,
+                createdAt: new Date().toISOString()
+            });
+            
+            document.getElementById('jumlah').value = '';
+            updateDisplay();
+            showToast('Permintaan penarikan berhasil dibuat!');
+        });
+
+        function logout() {
+            Storage.setCurrentUser(null);
+            window.location.href = '../index.html';
+        }
+
+        // Init
+        updateDisplay();
+    </script>
+</body>
+</html>
